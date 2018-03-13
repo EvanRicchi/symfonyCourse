@@ -1,5 +1,7 @@
 <?php
+
 namespace AppBundle\Controller\Api;
+
 use AppBundle\Entity\Category;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
