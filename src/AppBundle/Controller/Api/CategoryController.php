@@ -1,5 +1,7 @@
 <?php
+
 namespace AppBundle\Controller\Api;
+
 use AppBundle\Entity\Category;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -68,4 +70,16 @@ class CategoryController extends Controller
 		}
 		return $this->returnResponse($serializer->serialize($constraintValidationList, 'json'), Response::HTTP_BAD_REQUEST);
 	}
+
+    /**
+     * @Method({"DELETE"})
+     * @Route("/categories/{id}", name="delete")
+     */
+    public function deleteAction(Category $category)
+    {
+        $this->getDoctrine()->getManager()->remove($category);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->returnResponse('Category has been deleted.', Response::HTTP_OK);
+    }
 }
