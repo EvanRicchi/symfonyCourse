@@ -74,4 +74,24 @@ class ShowController extends Controller
             return new Response($serializer->serialize($constraintValidationList, 'json'),Response::HTTP_BAD_REQUEST);
         }
     }
+
+    /**
+     * @Method({"POST"})
+     * @Route("/shows", name="create")
+     */
+    public function createAction(Request $request, SerializerInterface $serializer, ValidatorInterface $validator)
+    {
+        $show = $serializer->deserialize($request->getContent(), Show::class, 'json');
+        $constraintValidationList = $validator->validate($show);
+
+        if($constraintValidationList->count() == 0){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($show);
+            $em->flush();
+
+            return $this->returnResponse('Show has been created.', Response::HTTP_CREATED);
+        } else {
+            return $this->returnResponse($serializer->serialize($constraintValidationList, 'json'), Response::HTTP_BAD_REQUEST);
+        }
+    }
 }
